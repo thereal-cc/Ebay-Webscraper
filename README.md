@@ -1,4 +1,4 @@
-# Ebay Webscraper
+# Ebay Webscraper (Terminal Version)
 
 This is a simple Ebay webscraper written in Python using BeautifulSoup4. Returns a list of ebay listings based on a given search term, sorted from lowest to highest in terms of price.
 
