@@ -3,7 +3,7 @@ import requests
 
 def extract_price_average(price_str):
     # Extracts the average value from a range or returns the single value
-    prices = [float(part.replace('$', '')) for part in price_str.split(' to ')]
+    prices = [float(part.replace('$', '').replace(',', '')) for part in price_str.split(' to ')]
     return sum(prices) / len(prices)
 
 # Scrape Ebay for listings
@@ -22,6 +22,14 @@ def scrape_ebay(search_term):
         name = item.find(class_="s-item__title").text
         price = item.find(class_="s-item__price").text
         link = item.find('a').get('href')
+
+        # Try to extract price, and skip the item if there is an issue
+        try:
+            price = item.find(class_="s-item__price").text
+            price_average = extract_price_average(price)
+        except ValueError:
+            print(f"Skipping item '{name}' due to an issue with price extraction.")
+            continue
 
         items_found[name] = {"price": price, "link": link}
 
